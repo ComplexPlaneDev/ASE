@@ -1,4 +1,4 @@
-public class Main {
+public class InventoryMain {
     public static void main(String[] args) {
         //Create Individual Products = Leaves
         Product penSet = new Product("Pen Set", "PEN001", 15.99, 50, "Stationery");

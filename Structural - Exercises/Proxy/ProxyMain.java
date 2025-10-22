@@ -1,7 +1,7 @@
 import java.util.Map;
 import java.util.HashMap;
 
-public class Main {
+public class ProxyMain {
     public static void main(String[] args) {
 
         // Create files
