@@ -1,0 +1,56 @@
+package com.github.ASE.Visitor.Visitors;
+
+import com.github.ASE.Visitor.TaxVisitor;
+import com.github.ASE.Visitor.Elements.Book;
+import com.github.ASE.Visitor.Elements.Electronics;
+import com.github.ASE.Visitor.Elements.Food;
+import com.github.ASE.Visitor.Elements.Luxury;
+
+public class Lemon implements TaxVisitor {
+    private double totalTax = 0;
+
+    @Override
+    public double visit(Book book) {
+        System.out.println("Book (Lemon): 50% tax");
+        double tax = book.getPrice() * 0.5;
+        totalTax += tax;
+        return tax;
+    }
+
+    @Override
+    public double visit(Food food) {
+        System.out.println("Food (Lemon): 10");
+        double tax = food.getPrice() * 0.1;
+        totalTax += tax;
+        return tax;
+    }
+
+    @Override
+    public double visit(Electronics electronics) {
+        System.out.println("Electronics (Lemon): 70% tax");
+        double tax = electronics.getPrice() * 0.7;
+        totalTax += tax;
+        return tax;
+    }
+
+    @Override
+    public double visit(Luxury luxury) {
+        System.out.println("Luxury (Lemon): 150% tax");
+        double tax = luxury.getPrice() * 1.5;
+        totalTax += tax;
+        return tax;
+    }
+
+    // @Override
+    // public double visit(Car car) {
+    //    System.out.println("Car (Lemon): 250% tax");
+    //    double tax = car.getPrice() * 2.5;
+    //    totalTax += tax;
+    //    return tax;
+    // }
+
+    @Override
+    public double getTax() {
+        return totalTax;
+    }
+}
