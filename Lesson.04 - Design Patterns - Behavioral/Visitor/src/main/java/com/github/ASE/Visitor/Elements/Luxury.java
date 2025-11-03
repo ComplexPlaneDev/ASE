@@ -1,0 +1,23 @@
+package com.github.ASE.Visitor.Elements;
+
+import com.github.ASE.Visitor.TaxVisitor;
+import com.github.ASE.Visitor.Taxable;
+
+public class Luxury implements Taxable {
+    private final String name;
+    private final double price;
+
+    public Luxury(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public double accept(TaxVisitor visitor) {
+        return visitor.visit(this);
+    }
+}
