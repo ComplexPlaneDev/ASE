@@ -4,6 +4,10 @@ import java.util.regex.Pattern;
  * UserService handles user registration and management operations.
  */
 public class UserService {
+    public enum AccountStatus {
+        MINOR, ADULT, SENIOR
+    }
+
     private UserRepository userRepository;
     private EmailService emailService;
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
@@ -75,80 +79,4 @@ public class UserService {
             return AccountStatus.SENIOR;
         }
     }
-}
-
-// Supporting classes and interfaces
-
-interface UserRepository {
-    boolean existsByEmail(String email);
-
-    User save(User user);
-
-    User findByEmail(String email);
-}
-
-interface EmailService {
-    void sendWelcomeEmail(String email, String name);
-
-    void sendPasswordResetEmail(String email);
-}
-
-class User {
-    private String name;
-    private String email;
-    private int age;
-
-    public User(String name, String email, int age) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
-    }
-
-    // Getters
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-}
-
-class RegistrationResult {
-    private boolean success;
-    private String message;
-
-    public RegistrationResult(boolean success, String message) {
-        this.success = success;
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-}
-
-enum AccountStatus {
-    MINOR, ADULT, SENIOR
 }
