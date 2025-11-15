@@ -2,9 +2,9 @@ package MathPlot.Parsers;
 
 public class AOS {
     public class Parts {
-        final String main;
-        final String left;
-        final String right;
+        public final String main;
+        public final String left;
+        public final String right;
 
         public Parts(String m, String l, String r) {
             this.main = m;
