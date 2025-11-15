@@ -11,6 +11,11 @@ import java.util.Map;
  * - MetricsCollector (system monitoring)
  */
 public class WeatherMonitoringService {
+    public enum AlertType {
+        HIGH_TEMPERATURE, EXTREME_HEAT, EXTREME_COLD,
+        SEVERE_WINDS, HURRICANE_FORCE_WINDS,
+        HEAVY_RAIN, SNOW_STORM, THUNDERSTORM
+    }
 
     private final WeatherDataProvider weatherDataProvider;
     private final AlertRepository alertRepository;
@@ -67,7 +72,7 @@ public class WeatherMonitoringService {
 
             // Step 4: Send notifications for severe alerts
             for (WeatherAlert alert : savedAlerts) {
-                if (alert.getSeverity() == AlertSeverity.SEVERE || alert.getSeverity() == AlertSeverity.EXTREME) {
+                if (alert.getSeverity() == AlertPreferences.AlertSeverity.SEVERE || alert.getSeverity() == AlertPreferences.AlertSeverity.EXTREME) {
                     List<String> subscribers = alertRepository.getSubscribersForLocation(locationId);
                     notificationService.sendWeatherAlert(alert, subscribers);
                 }
@@ -166,7 +171,7 @@ public class WeatherMonitoringService {
                 generateAlertId(),
                 weather.getLocationId(),
                 AlertType.EXTREME_HEAT,
-                AlertSeverity.EXTREME,
+                AlertPreferences.AlertSeverity.EXTREME,
                 "Extreme heat warning: " + weather.getTemperature() + "°C",
                 weather.getTimestamp()
             ));
@@ -175,7 +180,7 @@ public class WeatherMonitoringService {
                 generateAlertId(),
                 weather.getLocationId(),
                 AlertType.HIGH_TEMPERATURE,
-                AlertSeverity.SEVERE,
+                AlertPreferences.AlertSeverity.SEVERE,
                 "High temperature alert: " + weather.getTemperature() + "°C",
                 weather.getTimestamp()
             ));
@@ -186,7 +191,7 @@ public class WeatherMonitoringService {
                 generateAlertId(),
                 weather.getLocationId(),
                 AlertType.EXTREME_COLD,
-                AlertSeverity.EXTREME,
+                AlertPreferences.AlertSeverity.EXTREME,
                 "Extreme cold warning: " + weather.getTemperature() + "°C",
                 weather.getTimestamp()
             ));
@@ -198,7 +203,7 @@ public class WeatherMonitoringService {
                 generateAlertId(),
                 weather.getLocationId(),
                 AlertType.HURRICANE_FORCE_WINDS,
-                AlertSeverity.EXTREME,
+                AlertPreferences.AlertSeverity.EXTREME,
                 "Hurricane force winds: " + weather.getWindSpeed() + " km/h",
                 weather.getTimestamp()
             ));
@@ -207,7 +212,7 @@ public class WeatherMonitoringService {
                 generateAlertId(),
                 weather.getLocationId(),
                 AlertType.SEVERE_WINDS,
-                AlertSeverity.SEVERE,
+                AlertPreferences.AlertSeverity.SEVERE,
                 "Severe wind warning: " + weather.getWindSpeed() + " km/h",
                 weather.getTimestamp()
             ));
@@ -219,7 +224,7 @@ public class WeatherMonitoringService {
                 generateAlertId(),
                 weather.getLocationId(),
                 AlertType.HEAVY_RAIN,
-                AlertSeverity.MODERATE,
+                AlertPreferences.AlertSeverity.MODERATE,
                 "Heavy rainfall alert: " + weather.getRainfall() + " mm/h",
                 weather.getTimestamp()
             ));
@@ -231,171 +236,4 @@ public class WeatherMonitoringService {
     private String generateAlertId() {
         return "ALERT-" + System.currentTimeMillis();
     }
-}
-
-// External service interfaces
-interface WeatherDataProvider {
-    WeatherData getCurrentWeather(String locationId) throws WeatherApiException;
-    List<WeatherData> getForecast(String locationId, int days) throws WeatherApiException;
-}
-
-interface AlertRepository {
-    List<WeatherAlert> saveAlerts(List<WeatherAlert> alerts) throws DatabaseException;
-    List<String> getSubscribersForLocation(String locationId) throws DatabaseException;
-    List<WeatherAlert> getAlertsInDateRange(String locationId, LocalDateTime from, LocalDateTime to) throws DatabaseException;
-    void updateSubscriberPreferences(String locationId, String subscriberId, AlertPreferences preferences) throws DatabaseException;
-}
-
-interface NotificationService {
-    void sendWeatherAlert(WeatherAlert alert, List<String> subscribers) throws NotificationException;
-}
-
-interface MetricsCollector {
-    void recordSuccessfulDataFetch(String locationId);
-    void recordFailedDataFetch(String locationId);
-    void recordNoAlertsGenerated(String locationId);
-    void recordAlertsGenerated(String locationId, int count);
-    void recordForecastRequest(String locationId, int days);
-    void recordSubscriptionUpdate(String locationId, String subscriberId);
-    void recordApiError(String locationId, String error);
-    void recordDatabaseError(String locationId, String error);
-    void recordNotificationError(String locationId, String error);
-    void recordSystemError(String locationId, String error);
-}
-
-// Data classes
-class WeatherData {
-    private String locationId;
-    private double temperature;
-    private double windSpeed;
-    private double rainfall;
-    private double humidity;
-    private String conditions;
-    private LocalDateTime timestamp;
-
-    public WeatherData(String locationId, double temperature, double windSpeed,
-                      double rainfall, double humidity, String conditions, LocalDateTime timestamp) {
-        this.locationId = locationId;
-        this.temperature = temperature;
-        this.windSpeed = windSpeed;
-        this.rainfall = rainfall;
-        this.humidity = humidity;
-        this.conditions = conditions;
-        this.timestamp = timestamp;
-    }
-
-    // Getters
-    public String getLocationId() { return locationId; }
-    public double getTemperature() { return temperature; }
-    public double getWindSpeed() { return windSpeed; }
-    public double getRainfall() { return rainfall; }
-    public double getHumidity() { return humidity; }
-    public String getConditions() { return conditions; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-}
-
-class WeatherAlert {
-    private String alertId;
-    private String locationId;
-    private AlertType type;
-    private AlertSeverity severity;
-    private String message;
-    private LocalDateTime timestamp;
-
-    public WeatherAlert(String alertId, String locationId, AlertType type,
-                       AlertSeverity severity, String message, LocalDateTime timestamp) {
-        this.alertId = alertId;
-        this.locationId = locationId;
-        this.type = type;
-        this.severity = severity;
-        this.message = message;
-        this.timestamp = timestamp;
-    }
-
-    // Getters
-    public String getAlertId() { return alertId; }
-    public String getLocationId() { return locationId; }
-    public AlertType getType() { return type; }
-    public AlertSeverity getSeverity() { return severity; }
-    public String getMessage() { return message; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-}
-
-class MonitoringResult {
-    private boolean successful;
-    private String message;
-    private List<WeatherAlert> alerts;
-
-    public MonitoringResult(boolean successful, String message, List<WeatherAlert> alerts) {
-        this.successful = successful;
-        this.message = message;
-        this.alerts = alerts;
-    }
-
-    // Getters
-    public boolean isSuccessful() { return successful; }
-    public String getMessage() { return message; }
-    public List<WeatherAlert> getAlerts() { return alerts; }
-}
-
-class ForecastResult {
-    private boolean successful;
-    private String message;
-    private List<WeatherData> forecast;
-
-    public ForecastResult(boolean successful, String message, List<WeatherData> forecast) {
-        this.successful = successful;
-        this.message = message;
-        this.forecast = forecast;
-    }
-
-    // Getters
-    public boolean isSuccessful() { return successful; }
-    public String getMessage() { return message; }
-    public List<WeatherData> getForecast() { return forecast; }
-}
-
-class AlertPreferences {
-    private boolean enableTemperatureAlerts;
-    private boolean enableWindAlerts;
-    private boolean enablePrecipitationAlerts;
-    private AlertSeverity minimumSeverity;
-
-    public AlertPreferences(boolean enableTemperatureAlerts, boolean enableWindAlerts,
-                          boolean enablePrecipitationAlerts, AlertSeverity minimumSeverity) {
-        this.enableTemperatureAlerts = enableTemperatureAlerts;
-        this.enableWindAlerts = enableWindAlerts;
-        this.enablePrecipitationAlerts = enablePrecipitationAlerts;
-        this.minimumSeverity = minimumSeverity;
-    }
-
-    // Getters
-    public boolean isEnableTemperatureAlerts() { return enableTemperatureAlerts; }
-    public boolean isEnableWindAlerts() { return enableWindAlerts; }
-    public boolean isEnablePrecipitationAlerts() { return enablePrecipitationAlerts; }
-    public AlertSeverity getMinimumSeverity() { return minimumSeverity; }
-}
-
-// Enums
-enum AlertType {
-    HIGH_TEMPERATURE, EXTREME_HEAT, EXTREME_COLD,
-    SEVERE_WINDS, HURRICANE_FORCE_WINDS,
-    HEAVY_RAIN, SNOW_STORM, THUNDERSTORM
-}
-
-enum AlertSeverity {
-    LOW, MODERATE, SEVERE, EXTREME
-}
-
-// Custom exceptions
-class WeatherApiException extends Exception {
-    public WeatherApiException(String message) { super(message); }
-}
-
-class DatabaseException extends Exception {
-    public DatabaseException(String message) { super(message); }
-}
-
-class NotificationException extends Exception {
-    public NotificationException(String message) { super(message); }
 }
