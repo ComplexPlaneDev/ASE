@@ -72,3 +72,7 @@ Test exceptions allowed:
 ### Nice to have (Hard challenge)
 
 To reduce the complexity, the student can choose a always-continuous function, so the Point.Iterator hasBreak() method can always return false. Extra points will be received in case the plot can handle non-continuous functions.
+
+## How To Run
+
+Usually any IDE should be able to start the application selecting the App.java file in the MathPlot folder. In case Maven is chosen as Runner, the application can the be started using the Maven command "mvn javafx:run".
