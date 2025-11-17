@@ -8,12 +8,14 @@ import java.util.stream.Stream;
 
 public class RPN {
     final String input;
-    final List<String> valid;
+    final List<String> operators;
+    final List<String> functions;
     int ops = 0;
 
     public RPN(String input) {
         this.input = input;
-        this.valid = Arrays.asList("+", "-", "*", "/", "^", "sin", "cos", "exp", "log");
+        this.operators = Arrays.asList("+", "-", "*", "/", "^");
+        this.functions = Arrays.asList("sin", "cos", "exp", "log");
     }
 
     public Stack<String> parse() throws Exception {
@@ -33,8 +35,13 @@ public class RPN {
                 continue;
             }
 
-            if (valid.contains(token)) {
-                --ops;
+            final boolean isOperator = operators.contains(token);
+            if (isOperator || functions.contains(token)) {
+                if (isOperator) {
+                    --ops;
+                }
+            } else {
+                throw new Exception("Illegal token found");
             }
         }
 
