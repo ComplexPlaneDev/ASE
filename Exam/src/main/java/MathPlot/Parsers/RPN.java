@@ -51,7 +51,7 @@ public class RPN {
         try {
             Float.parseFloat(s);
             return true;
-        } catch (Exception _) {
+        } catch (Exception e) {
             return false;
         }
     }

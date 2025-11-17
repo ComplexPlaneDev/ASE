@@ -2,13 +2,13 @@ package MathPlot;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+
 
 public class MathPlot {
     private class Plotter implements PlotterInterface {
@@ -117,8 +117,8 @@ public class MathPlot {
             this.items = new ArrayList<>();
             this.canvas = canvas;
 
-            this.canvas.widthProperty().addListener(_ -> render());
-            this.canvas.heightProperty().addListener(_ -> render());
+            this.canvas.widthProperty().addListener(event -> render());
+            this.canvas.heightProperty().addListener(event -> render());
 
             this.canvas.setOnMousePressed(e -> {
                 if (e.getButton() == MouseButton.PRIMARY) {
