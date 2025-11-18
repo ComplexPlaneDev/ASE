@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
