@@ -1,6 +1,8 @@
 package com.github.ASE.Reflection.Array.Apis;
 
-public class BlogInfo {
+import com.github.ASE.Reflection.Array.Item;
+
+public class BlogInfo implements Item {
     public String name;
     public String url;
 

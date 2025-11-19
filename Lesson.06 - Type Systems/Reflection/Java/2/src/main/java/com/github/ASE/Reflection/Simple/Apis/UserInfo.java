@@ -1,6 +1,8 @@
 package com.github.ASE.Reflection.Simple.Apis;
 
-public class UserInfo {
+import com.github.ASE.Reflection.Simple.Item;
+
+public class UserInfo implements Item {
     public String name;
     public String avatar;
 

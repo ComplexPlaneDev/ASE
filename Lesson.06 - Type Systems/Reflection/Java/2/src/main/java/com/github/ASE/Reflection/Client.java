@@ -9,8 +9,8 @@ public class Client {
         this.mainUrl = mainUrl;
     }
 
-    public <T> void call(final Class<? extends com.github.ASE.Reflection.Simple.Api<T>> clazz,
-            final com.github.ASE.Reflection.Simple.Completion<T> onCompletion) {
+    public <T extends com.github.ASE.Reflection.Simple.Item> void call(final Class<? extends com.github.ASE.Reflection.Simple.Api<T>> clazz,
+                                      final com.github.ASE.Reflection.Simple.Completion<T> onCompletion) {
 
         Class<?>[] cArg = new Class<?>[] {};
 
@@ -25,7 +25,7 @@ public class Client {
         }
     }
 
-    public <T> void call(final Class<? extends com.github.ASE.Reflection.Array.Api<T>> clazz,
+    public <T extends com.github.ASE.Reflection.Array.Item> void call(final Class<? extends com.github.ASE.Reflection.Array.Api<T>> clazz,
             final com.github.ASE.Reflection.Array.Completion<T> onCompletion) {
 
         Class<?>[] cArg = new Class<?>[] {};
