@@ -120,7 +120,8 @@ public class App extends Application {
         });
 
         areaButton.setOnAction(e -> {
-            final double area = mathPlot.area();
+            final double area = mathPlot.area(rectButton.isSelected() ?
+                    MathPlot.AreaType.Rectangular : MathPlot.AreaType.Trapezoidal);
             areaText.setText(String.format("Area: %.3f", area));
         });
 

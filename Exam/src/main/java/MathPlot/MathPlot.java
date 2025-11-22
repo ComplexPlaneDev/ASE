@@ -226,6 +226,11 @@ public class MathPlot {
         AOS, RPN
     }
 
+    public enum AreaType {
+        Rectangular,
+        Trapezoidal
+    }
+
     public MathPlot() {
         // YOU CAN CHANGE HERE
     }
@@ -242,7 +247,7 @@ public class MathPlot {
         pf.render();
     }
 
-    public double area() {
+    public double area(AreaType areaType) {
         // YOU CAN CHANGE HERE
 
         return 0.0;
