@@ -1,0 +1,14 @@
+{
+  "name": "monads",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "dbg-balance": "node --inspect-brk -r ts-node/register balance.ts",
+    "balance": "node -r ts-node/register balance.ts",
+    "dbg-orders": "node --inspect-brk -r ts-node/register orders.ts",
+    "orders": "node -r ts-node/register orders.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
