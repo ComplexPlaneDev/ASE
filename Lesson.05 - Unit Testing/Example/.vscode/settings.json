@@ -1,0 +1,10 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.test.config": {
+        "vmArgs": [
+            "-Dnet.bytebuddy.experimental=true",
+            "-javaagent:${env:HOME}/.m2/repository/org/mockito/mockito-core/5.24.0/mockito-core-5.24.0.jar",
+            "-Xshare:off"
+        ]
+    }
+}
