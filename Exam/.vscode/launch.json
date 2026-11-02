@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.github.ase/com.github.ase.App",
+            "projectName": "board-game",
+            "vmArgs": "--enable-native-access=javafx.graphics",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
